@@ -1,0 +1,3 @@
+[submodule "Project_Portal_Backend"]
+	path = Project_Portal_Backend
+	url = https://github.com/dunix241/Project_Portal_Backend

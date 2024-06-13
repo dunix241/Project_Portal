@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  Project_Portal_Backend:
+    build:
+      context: ./Project_Portal_Backend/API
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mysql;Database=project_portal;User=root;Password=root;
+      - Minio__Endpoint=minio/9000
+      - Minio__AccessKey=admin
+      - Minio__SecretKey=admin
+    depends_on:
+      - mysql
+      - minio
+
+  Project_Portal_Frontend:
+    build:
+      context: ./Project_Portal_Frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - Project_Portal_Backend
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: project_portal
+
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: admin
+      MINIO_SECRET_KEY: admin
+    command: server /data
+
