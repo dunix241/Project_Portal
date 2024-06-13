@@ -1,44 +1,50 @@
 version: '3.8'
 
 services:
-  Project_Portal_Backend:
+  project-portal-backend:
     build:
-      context: ./Project_Portal_Backend/API
+      context: ./Project_Portal_Backend
+      dockerfile: API/Dockerfile
     ports:
-      - "5000:5000"
       - "5001:5001"
+      - "5002:5002"
+    volumes:
+      - ~/.aspnet/https:/https
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql;Database=project_portal;User=root;Password=root;
+      # - ConnectionStrings__DefaultConnection=Server=mysql;Port=3307;Database=project_portal;User=root;Password=root; # Only enable if using mysql
       - Minio__Endpoint=minio/9000
       - Minio__AccessKey=admin
-      - Minio__SecretKey=admin
+      - Minio__SecretKey=AdminSecretKey
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=cert
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
     depends_on:
-      - mysql
+      # - mysql # Only enable if using mysql
       - minio
 
-  Project_Portal_Frontend:
-    build:
-      context: ./Project_Portal_Frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - Project_Portal_Backend
+  # project-portal-frontend:
+  #   build:
+  #     context: ./Project_Portal_Frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - project-portal-backend
 
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: project_portal
+  # Only enable if using mysql
+  # mysql:
+  #   image: mysql:8.0
+  #   ports:
+  #     - "3307:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: project_portal
 
   minio:
     image: minio/minio
     ports:
       - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ACCESS_KEY: admin
-      MINIO_SECRET_KEY: admin
-    command: server /data
-
+      MINIO_SECRET_KEY: AdminSecretKey
+    command: server --console-address ":9001" /data
