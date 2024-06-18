@@ -10,6 +10,7 @@ services:
       - "5002:5002"
     volumes:
       - ./docker/https:/https
+      - ./Project_Portal_Backend/API/project-portal.db:/app/project-portal.db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # - ConnectionStrings__DefaultConnection=Server=mysql;Port=3307;Database=project_portal;User=root;Password=root; # Only enable if using mysql
