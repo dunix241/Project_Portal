@@ -13,7 +13,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # - ConnectionStrings__DefaultConnection=Server=mysql;Port=3307;Database=project_portal;User=root;Password=root; # Only enable if using mysql
-      - Minio__Endpoint=minio/9000
+      - Minio__Endpoint=minio:9000
       - Minio__AccessKey=admin
       - Minio__SecretKey=AdminSecretKey
       - ASPNETCORE_Kestrel__Certificates__Default__Password=cert
