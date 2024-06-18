@@ -9,7 +9,7 @@ services:
       - "5001:5001"
       - "5002:5002"
     volumes:
-      - ~/.aspnet/https:/https
+      - ./docker/https:/https
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       # - ConnectionStrings__DefaultConnection=Server=mysql;Port=3307;Database=project_portal;User=root;Password=root; # Only enable if using mysql
@@ -31,13 +31,17 @@ services:
   #     - project-portal-backend
 
   # Only enable if using mysql
-  # mysql:
-  #   image: mysql:8.0
-  #   ports:
-  #     - "3307:3306"
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: project_portal
+#  mysql:
+#     image: mysql:8.0
+#     ports:
+#       - "3307:3306"
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: project_portal
+#     volumes:
+#       - './db/data:/var/lib/mysql'
+#       - './db/my.cnf:/etc/mysql/conf.d/my.cnf'
+#       - './db/sql:/docker-entrypoint-initdb.d'
 
   minio:
     image: minio/minio
@@ -47,4 +51,17 @@ services:
     environment:
       MINIO_ACCESS_KEY: admin
       MINIO_SECRET_KEY: AdminSecretKey
+    volumes:
+      - ./docker/minio/data:/data
     command: server --console-address ":9001" /data
+
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '40081:81'
+      - '443:443'
+    volumes:
+      - ./docker/nginx/data:/data
+      - ./docker/nginx/letsencrypt:/etc/letsencrypt
