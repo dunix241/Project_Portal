@@ -1,3 +1,6 @@
 [submodule "Project_Portal_Backend"]
 	path = Project_Portal_Backend
 	url = https://github.com/dunix241/Project_Portal_Backend
+[submodule "Project_Portal_Frontend"]
+	path = Project_Portal_Frontend
+	url = https://github.com/dunix241/Project_Portal_Frontend.git

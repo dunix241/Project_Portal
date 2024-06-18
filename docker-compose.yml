@@ -22,13 +22,13 @@ services:
       # - mysql # Only enable if using mysql
       - minio
 
-  # project-portal-frontend:
-  #   build:
-  #     context: ./Project_Portal_Frontend
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - project-portal-backend
+  project-portal-frontend:
+     build:
+       context: ./Project_Portal_Frontend
+     ports:
+       - "3000:3000"
+     depends_on:
+       - project-portal-backend
 
   # Only enable if using mysql
 #  mysql:
