@@ -28,6 +28,11 @@ services:
        context: ./Project_Portal_Frontend
      ports:
        - "3000:3000"
+     environment:
+       - NEXT_PUBLIC_API_BASE_URL=https://api.dunix.id.vn
+       - NEXT_PUBLIC_API_VERSION=v1
+       - NEXT_PUBLIC_DISABLE_LOGS=false
+       - NEXT_PUBLIC_ENABLE_SERVER_LOGS=true
      depends_on:
        - project-portal-backend
 
@@ -60,7 +65,7 @@ services:
     image: 'jc21/nginx-proxy-manager:latest'
     restart: unless-stopped
     ports:
-      - '80:80'
+      - '40080:80'
       - '40081:81'
       - '443:443'
     volumes:
